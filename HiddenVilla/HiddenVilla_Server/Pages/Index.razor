@@ -1,0 +1,117 @@
+﻿@page "/"
+
+
+<div class="bg-light border p-2">
+    <h2 class="bg-light border p-2">
+        First Room
+    </h2>
+    Room: @Room.Name
+    <br />
+    Price: @Room.Price
+
+    @*Two way data binding happens for every input keystroke*@
+    <input type="number" @bind-value="Room.Price" @bind-value:event="oninput" />
+
+    @*Two way data binding
+        <input type="number" @bind-value="@Room.Price" />*@
+
+    @*Value in textbox.
+        <input type="number" value="@Room.Price" />*@
+    <br />
+    <input type="checkbox" @bind-value="Room.IsActive" checked="@(Room.IsActive?"checked":null)" /> &nbsp;; Is Active
+    <br />
+    <span>This room is @(Room.IsActive?"Active":"Inactive")</span>
+    <br />
+
+    <select @bind="SelectedRoomProperties">
+        @foreach (var prop in Room.RoomProperties)
+        {
+            <option value="@prop.Name">@prop.Name</option>
+        }
+    </select>
+    <span>The room property selected is: @SelectedRoomProperties</span>
+</div>
+
+<div>
+
+    <h2 class="text-info">Room List</h2>
+    <table class="table table-dark">
+        @foreach(var room in RoomsList)
+        {
+        <tr>
+            <td>
+                <input type="text" @bind-value="room.Name" @bind-value:event="oninput" />
+            </td>
+            <td>
+                <input type="text" @bind-value="room.Price" @bind-value:event="oninput" />
+            </td>
+            @foreach(var prop in room.RoomProperties)
+            {
+                <td>@prop.Name - @prop.Value</td>
+            }
+        </tr>
+        }
+    </table>
+
+    <br />
+    @foreach (var room in RoomsList)
+    {
+        <p>@room.Name's Price is @room.Price</p>
+    }
+
+</div>
+
+
+
+
+@code{
+
+    private string SelectedRoomProperties = "";
+    List<Room> RoomsList = new List<Room>();
+
+
+    Room Room = new Room()
+    {
+        RoomId = 101,
+        Name = "Villa Suite",
+        IsActive = true,
+        Price = 499,
+        RoomProperties = new List<RoomProperties>
+        {
+            new RoomProperties{RoomPropertiesId = 1, Name="Sq Ft", Value="100"},
+            new RoomProperties{RoomPropertiesId = 2, Name="Occupancy", Value="3"}
+        }
+
+    };
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        RoomsList.Add(new Room()
+        {
+            RoomId = 201,
+            Name = "Villa Suite One Bed Room",
+            IsActive = true,
+            Price = 399,
+            RoomProperties = new List<RoomProperties>
+            {
+                new RoomProperties{RoomPropertiesId = 1, Name="Sq Ft", Value="100"},
+                new RoomProperties{RoomPropertiesId = 2, Name="Occupancy", Value="4"}
+            }
+        });
+
+        RoomsList.Add(new Room()
+        {
+            RoomId = 301,
+            Name = "Villa Suite One Bed Room",
+            IsActive = true,
+            Price = 699,
+            RoomProperties = new List<RoomProperties>
+            {
+                new RoomProperties{RoomPropertiesId = 1, Name="Sq Ft", Value="150"},
+                new RoomProperties{RoomPropertiesId = 2, Name="Occupancy", Value="6"}
+            }
+        });
+    }
+}
