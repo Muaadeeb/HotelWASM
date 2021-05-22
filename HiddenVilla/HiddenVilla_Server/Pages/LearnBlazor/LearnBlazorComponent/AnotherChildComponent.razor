@@ -1,0 +1,25 @@
+﻿<div>
+    <h4 class="text-primary pt-3">Another Child Component</h4>
+    @*<input id="roomName" placeholder="@Placeholder" required="@Required" maxlength="@MaxLength" class="form-control" />*@
+    
+    @*FYI - @attributes && placeholder will perform differently depending on which one is listed first on the input tag.*@ 
+    <input id="roomName" @attributes="InputAttributes" placeholder="Initial Text" class="form-control" />
+</div>
+
+@code {
+    //[Parameter]
+    //public string Placeholder { get; set; } = "Initial Text";
+    //[Parameter]
+    //public string Required { get; set; } = "required";
+    //[Parameter]
+    //public string MaxLength { get; set; } = "10";
+
+
+    [Parameter(CaptureUnmatchedValues = true)] // any values from parents/siblings not defined will be acceptted as legitmate parameteres and will populate pur dictionary.  cf. ParentComponent
+    public Dictionary<string, object> InputAttributes { get; set; } = new Dictionary<string, object>();
+    //{ // attribute splatting
+    //    {"required", "required" },
+    //    {"placeholder", "Initial Text" },
+    //    {"maxlength", 10  }
+    //};
+}

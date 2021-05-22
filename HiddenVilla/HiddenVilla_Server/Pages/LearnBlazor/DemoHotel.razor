@@ -1,0 +1,113 @@
+﻿@page "/demohotel"
+
+<h3>DemoHotel</h3>
+<h3>We will dispolay hotel rooms and amenities here!</h3>
+<div class="border p-2 mt-2" style="background-color:azure">
+    <h2 class="text-info"> Room List [USING COMPONENT]</h2>
+    <div class="row container">
+
+        <div class="col-12">
+            <h4 class="text-info">Hotel Room's</h4>
+            <span>Rooms Selected - @SelectedRooms</span>
+        </div>
+
+        @foreach (var room in RoomsList)
+        {
+            <IndividualRoom OnRoomCheckBoxSelection="RoomSelectionCounterChanged" Room="@room"></IndividualRoom>
+        }
+
+        <div class="col-12 mt-4">
+            <h4 class="text-info">Hotel Amenitie's [assignment]</h4>
+        </div>
+        @foreach (var amenity in AmenitiesList)
+        {
+            <IndividualAmenity OnAmenitySelection="AmenitySelectionChanged" Amenity="@amenity">
+                <FirstFragment>#1</FirstFragment>
+                <SecondFragment>#2</SecondFragment>
+            </IndividualAmenity>
+        }
+
+    </div>
+    <div class="col-12">
+        <p class="text-secondary">Selected Amenity : @SelectedAmenity</p>
+
+    </div>
+</div>
+
+@code{
+    public int SelectedRooms { get; set; } = 0;
+    public string SelectedAmenity { get; set; } = string.Empty;
+    List<Room> RoomsList = new List<Room>();
+    List<Amenity> AmenitiesList = new List<Amenity>();
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        RoomsList.Add(new Room()
+        {
+            RoomId = 201,
+            Name = "Villa Suite One Bed Room",
+            IsActive = true,
+            Price = 399,
+            RoomProperties = new List<RoomProperty>
+            {
+                new RoomProperty{RoomPropertyId = 1, Name="Sq Ft", Value="100"},
+                new RoomProperty{RoomPropertyId = 2, Name="Occupancy", Value="4"}
+            }
+        });
+
+        RoomsList.Add(new Room()
+        {
+            RoomId = 301,
+            Name = "Villa Suite One Bed Room",
+            IsActive = true,
+            Price = 699,
+            RoomProperties = new List<RoomProperty>
+            {
+                new RoomProperty{RoomPropertyId = 1, Name="Sq Ft", Value="150"},
+                new RoomProperty{RoomPropertyId = 2, Name="Occupancy", Value="6"}
+            }
+        });
+
+        AmenitiesList.Add(new Amenity
+        {
+            AmentityId = 111,
+            Name = "Gym",
+            Description = "24x7 gym room is available."
+        });
+
+        AmenitiesList.Add(new Amenity
+        {
+            AmentityId = 222,
+            Name = "Swimming Pool",
+            Description = "Pool room is open from 6am to 10pm."
+        });
+
+        AmenitiesList.Add(new Amenity
+        {
+            AmentityId = 333,
+            Name = "Free Breakfast",
+            Description = "Enjoy free breakfast at our hotel."
+        });
+    }
+
+
+    protected void RoomSelectionCounterChanged(bool isRoomSelected)
+    {
+        if (isRoomSelected)
+        {
+            SelectedRooms++;
+        }
+        else
+        {
+            SelectedRooms--;
+        }
+    }
+
+    protected void AmenitySelectionChanged(string amenity)
+    {
+        SelectedAmenity = amenity;
+    }
+}

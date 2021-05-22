@@ -11,7 +11,7 @@ namespace HiddenVilla_Server.Models
         public string Name { get; set; }
         public double Price { get; set; }
         public bool IsActive { get; set; }
-        public List<RoomProperties> RoomProperties { get; set; }
+        public List<RoomProperty> RoomProperties { get; set; }
 
     }
 }

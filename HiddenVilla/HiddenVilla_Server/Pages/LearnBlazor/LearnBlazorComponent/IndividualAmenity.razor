@@ -1,0 +1,38 @@
+﻿
+<div class="bi-light border p-2 col-5 offset-1" @onclick="(args)=>AmenitySelectionChanged(args, Amenity.Name)">
+    @* TJI #1 <div class="bi-light border p-2 col-5 offset-1" @onclick="AmenitySelectionChanged">*@
+        <h4 class="text-secondary">Amenities - @Amenity.AmentityId</h4>
+
+        @Amenity.Name<br />
+        @Amenity.Description<br />
+        RF from Parent - @FirstFragment @SecondFragment
+    </div>
+
+    @code {
+
+        [Parameter]
+        public Amenity Amenity { get; set; }
+
+        [Parameter]
+        public EventCallback<string> OnAmenitySelection { get; set; }
+
+        [Parameter]
+        public RenderFragment FirstFragment { get; set; }
+
+        [Parameter]
+        public RenderFragment SecondFragment { get; set; }
+
+        protected async Task AmenitySelectionChanged(MouseEventArgs e, string name)
+        {
+            // Note we are not using MouseEventArgs - is this here to represent a pattern for the future?  On line 1 - we could remove the lamba and just pass in Amenity.Name... fyi
+            await OnAmenitySelection.InvokeAsync(name);
+        }
+
+        // TJI #1
+        //protected async Task AmenitySelectionChanged()
+        //{   // Alternate way to do this.
+        //    await OnAmenitySelection.InvokeAsync(Amenity.Name);
+        //}
+
+
+    }

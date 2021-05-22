@@ -1,0 +1,38 @@
+﻿@page "/ParentComponent"
+
+<h1 class="text-danger">Parent Child Component</h1>
+
+
+<CascadingValue Value="@_messageForGrandChild" Name="MessageFromGrandParent">
+    <CascadingValue Value="@_luckyNumber" Name="GrandParentsLuckyNumber">
+        <ChildComponent OnClickBtnMethod="ShowMessage" Title="This title is passed as a parameter from parent component.">
+            <DangerChildContent>Danger content from render fragment</DangerChildContent>
+        </ChildComponent>
+    </CascadingValue>
+</CascadingValue>
+
+@*<AnotherChildComponent InputAttributes="InputAttributesFromParent"></AnotherChildComponent>*@
+<AnotherChildComponent placeholder="Placeholder default"></AnotherChildComponent>
+
+<p><strong>@_messageText</strong></p>
+
+
+@code {
+
+    //[Parameter]
+    //public Dictionary<string, object> InputAttributesFromParent { get; set; } = new Dictionary<string, object>()
+    //{ // attribute splatting
+    //    {"required", "required" },
+    //    {"placeholder", "Enter the Room Name From Parent" },
+    //    {"maxlength", 5 }
+    //};
+
+    private int _luckyNumber { get; set; } = 7;
+    private string _messageForGrandChild = "This is a message from grandparent.";
+    private string _messageText = string.Empty;
+
+    private void ShowMessage(MouseEventArgs e)
+    {
+        _messageText = "Blazing text from parent.";
+    }
+}

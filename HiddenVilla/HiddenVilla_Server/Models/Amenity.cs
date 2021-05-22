@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace HiddenVilla_Server.Models
 {
-    public class RoomProperties
+    public class Amenity
     {
-        public int RoomPropertiesId { get; set; }
+        public int AmentityId { get; set; }
         public string Name { get; set; }
-        public string Value  { get; set; }
+        public string Description { get; set; }
     }
 }
