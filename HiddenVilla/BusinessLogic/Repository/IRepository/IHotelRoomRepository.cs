@@ -10,8 +10,10 @@ namespace Business.Repository.IRepository
     public interface IHotelRoomRepository
     {
         public Task<HotelRoomDTO> CreateHotelRoom(HotelRoomDTO hotelRoomDTO);
+        public Task<IEnumerable<HotelRoomDTO>> GetAllHotelRooms();
         public Task<HotelRoomDTO> UpdateHotelRoom(HotelRoomDTO hotelRoomDTO, int roomId);
-        public Task<IEnumerable<HotelRoomDTO>> GetHotelRoom(int roomId);
-        public Task<HotelRoomDTO> IsSameNameRoomAlreadyPresent(string name);
+        public Task<HotelRoomDTO> GetHotelRoom(int roomId);
+        public Task<int> DeleteHotelRoom(int roomId);
+        public Task<HotelRoomDTO> IsRoomUnique(string name);
     }
 }

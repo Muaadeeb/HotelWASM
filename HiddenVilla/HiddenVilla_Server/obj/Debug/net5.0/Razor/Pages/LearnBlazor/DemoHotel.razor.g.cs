@@ -81,14 +81,21 @@ using HiddenVilla_Server.Shared;
 #nullable disable
 #nullable restore
 #line 12 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\_Imports.razor"
-using Models;
+using HiddenVilla_Server.Pages.LearnBlazor.LearnBlazorComponent;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 13 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\_Imports.razor"
-using HiddenVilla_Server.Pages.LearnBlazor.LearnBlazorComponent;
+using HiddenVilla_Server.ModelsUI;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 14 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\_Imports.razor"
+using Models;
 
 #line default
 #line hidden
@@ -141,7 +148,7 @@ using HiddenVilla_Server.Pages.LearnBlazor.LearnBlazorComponent;
 #line hidden
 #nullable disable
             )));
-            __builder.AddAttribute(16, "Room", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<HiddenVilla_Server.Models.Room>(
+            __builder.AddAttribute(16, "Room", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<HiddenVilla_Server.ModelsUI.Room>(
 #nullable restore
 #line 16 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\Pages\LearnBlazor\DemoHotel.razor"
                                                                                          room
@@ -177,7 +184,7 @@ using HiddenVilla_Server.Pages.LearnBlazor.LearnBlazorComponent;
 #line hidden
 #nullable disable
             )));
-            __builder.AddAttribute(20, "Amenity", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<HiddenVilla_Server.Models.Amenity>(
+            __builder.AddAttribute(20, "Amenity", Microsoft.AspNetCore.Components.CompilerServices.RuntimeHelpers.TypeCheck<HiddenVilla_Server.ModelsUI.Amenity>(
 #nullable restore
 #line 24 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\Pages\LearnBlazor\DemoHotel.razor"
                                                                                       amenity

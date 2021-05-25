@@ -84,14 +84,21 @@ using HiddenVilla_Server.Shared;
 #nullable disable
 #nullable restore
 #line 12 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\_Imports.razor"
-using Models;
+using HiddenVilla_Server.Pages.LearnBlazor.LearnBlazorComponent;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 13 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\_Imports.razor"
-using HiddenVilla_Server.Pages.LearnBlazor.LearnBlazorComponent;
+using HiddenVilla_Server.ModelsUI;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 14 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\_Imports.razor"
+using Models;
 
 #line default
 #line hidden

@@ -5,13 +5,13 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HiddenVilla_Server", "HiddenVilla_Server\HiddenVilla_Server.csproj", "{1C43124C-D2FF-4417-98D5-8F5F0B3E8625}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{52C4474E-1EAD-449C-8241-8EB7A9FBC6DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{52C4474E-1EAD-449C-8241-8EB7A9FBC6DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{556A45C7-76EC-4794-BC50-9F72FB11D17E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{556A45C7-76EC-4794-BC50-9F72FB11D17E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "BusinessLogic\Business.csproj", "{D6CBCEF7-B44E-4D73-B6F8-B81105F8B2B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "BusinessLogic\Business.csproj", "{D6CBCEF7-B44E-4D73-B6F8-B81105F8B2B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{EA10D2E8-D075-4E11-9BCB-449198E2D83D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{EA10D2E8-D075-4E11-9BCB-449198E2D83D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

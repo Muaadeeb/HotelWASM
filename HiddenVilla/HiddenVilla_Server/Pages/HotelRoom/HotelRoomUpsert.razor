@@ -1,0 +1,25 @@
+﻿@page "/hotel-room/create"
+@using global::Models
+
+
+<div class="row mt-2 mb-5">
+    <h3 class="card-title text-info mb-3 ml-3">@Title Hotel Room</h3>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <EditForm Model="HotelRoomModel">
+
+
+                </EditForm>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@code {
+
+    private HotelRoomDTO HotelRoomModel { get; set; } = new HotelRoomDTO();
+    private string Title { get; set; } = "Create";
+
+}

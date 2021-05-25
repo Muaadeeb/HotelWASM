@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HiddenVilla_Server.Models
+namespace HiddenVilla_Server.ModelsUI
 {
-    public class RoomProperty
+    public class Amenity
     {
-        public int RoomPropertyId { get; set; }
+        public int AmentityId { get; set; }
         public string Name { get; set; }
-        public string Value  { get; set; }
+        public string Description { get; set; }
     }
 }

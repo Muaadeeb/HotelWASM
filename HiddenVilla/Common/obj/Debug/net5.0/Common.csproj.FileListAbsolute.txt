@@ -2,7 +2,6 @@ C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVi
 C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\Common\bin\Debug\net5.0\Common.dll
 C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\Common\bin\Debug\net5.0\ref\Common.dll
 C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\Common\bin\Debug\net5.0\Common.pdb
-C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\Common\obj\Debug\net5.0\Common.csprojAssemblyReference.cache
 C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\Common\obj\Debug\net5.0\Common.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\Common\obj\Debug\net5.0\Common.AssemblyInfoInputs.cache
 C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\Common\obj\Debug\net5.0\Common.AssemblyInfo.cs
