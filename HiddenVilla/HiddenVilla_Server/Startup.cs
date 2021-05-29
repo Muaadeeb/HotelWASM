@@ -1,5 +1,4 @@
 using DataAccess.Data;
-using HiddenVilla_Server.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +12,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Business.Repository.IRepository;
+using Business.Repository;
+using HiddenVilla_Server.Services.Interfaces;
+using HiddenVilla_Server.Services;
 
 namespace HiddenVilla_Server
 {
@@ -38,7 +41,9 @@ namespace HiddenVilla_Server
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+            services.AddScoped<IHotelRoomRepository, HotelRoomRepository>();
+            services.AddScoped<IHotelImageRepository, HotelImageRepository>();
+            services.AddScoped<IFileUpload, FileUpload>();
 
             services.AddRazorPages();
             services.AddServerSideBlazor();

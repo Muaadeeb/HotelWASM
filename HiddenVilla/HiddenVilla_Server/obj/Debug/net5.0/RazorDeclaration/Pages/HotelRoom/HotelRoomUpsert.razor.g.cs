@@ -104,13 +104,28 @@ using Models;
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\Pages\HotelRoom\HotelRoomUpsert.razor"
-using global::Models;
+#line 15 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\_Imports.razor"
+using HiddenVilla_Server.Helper;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 16 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\_Imports.razor"
+using Business.Repository.IRepository;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 18 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\_Imports.razor"
+using HiddenVilla_Server.Services.Interfaces;
 
 #line default
 #line hidden
 #nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/hotel-room/create")]
+    [Microsoft.AspNetCore.Components.RouteAttribute("/hotel-room/edit/{Id:int}")]
     public partial class HotelRoomUpsert : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -119,15 +134,119 @@ using global::Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 20 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\Pages\HotelRoom\HotelRoomUpsert.razor"
+#line 77 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\Pages\HotelRoom\HotelRoomUpsert.razor"
        
 
-    private HotelRoomDTO HotelRoomModel { get; set; } = new HotelRoomDTO();
+    [Parameter]
+    public int? Id { get; set; }
+
+    private HotelRoomDTO HotelRoomDto { get; set; } = new HotelRoomDTO();
+    private string Title { get; set; } = "Create";
+
+    protected async override Task OnInitializedAsync()
+    {
+        if (Id != null)
+        {
+            Title = "Update";
+            HotelRoomDto = await _hotelRoomRepository.GetHotelRoom(Id.Value);
+        }
+        else
+        {
+            Title = "Create";
+            HotelRoomDto = new HotelRoomDTO();
+        }
+    }
+
+    private async Task HandleHotelRoomUpsert()
+    {
+        try
+        {
+            var roomDetailsByName = await _hotelRoomRepository.IsRoomUnique(HotelRoomDto.Name, HotelRoomDto.Id);
+
+            if (roomDetailsByName != null)
+            {
+                await _jsRunTime.ToastrError("Room name already exists.");
+                return;
+            }
+
+
+            if (HotelRoomDto.Id != 0 && Title == "Update")
+            {
+                var updateResult = await _hotelRoomRepository.UpdateHotelRoom(HotelRoomDto, HotelRoomDto.Id);
+                await _jsRunTime.ToastrSuccess("Hotel room updated successfully.");
+            }
+            else
+            {
+                var createdResult = await _hotelRoomRepository.CreateHotelRoom(HotelRoomDto);
+                await _jsRunTime.ToastrSuccess("Hotel room created successfully.");
+            }
+        }
+        catch(Exception ex)
+        {
+            // log exception
+        }
+
+        _navigationManager.NavigateTo("hotel-room");
+    }
+
+    private async Task HandleImageUpload(InputFileChangeEventArgs e)
+    {
+        try
+        {
+            var images = new List<string>();
+            if (e.GetMultipleFiles().Count > 0)
+            {
+                foreach(var file in e.GetMultipleFiles())
+                {
+                    System.IO.FileInfo fileInfo = new System.IO.FileInfo(file.Name);
+                    if (fileInfo.Extension.ToLower() == ".jpg" ||
+                        fileInfo.Extension.ToLower() == ".png" ||
+                        fileInfo.Extension.ToLower() == ".jpeg")
+                    {
+                        var uploadedImagePath = await _fileUpload.UploadFile(file);
+                        images.Add(uploadedImagePath);
+                    }
+                    else
+                    {
+                        await _jsRunTime.ToastrError("Please select .jpg/.jpeg/.png files only");
+                        return;
+                    }
+                };
+
+                if (images.Any())
+                {
+                    if(HotelRoomDto.ImagesUrls != null && HotelRoomDto.ImagesUrls.Any())
+                    {
+                        HotelRoomDto.ImagesUrls.AddRange(images);
+                    }
+                    else
+                    {
+                        HotelRoomDto.ImagesUrls = new List<string>();
+                        HotelRoomDto.ImagesUrls.AddRange(images);
+                    }
+                }
+                else
+                {
+                    await _jsRunTime.ToastrError("Image uploading failed.");
+                    return;
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            await _jsRunTime.ToastrError("Something happened while uploading images." + ex.Message);
+            return;
+        }
+    }
 
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IFileUpload _fileUpload { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime _jsRunTime { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IHotelRoomRepository _hotelRoomRepository { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager _navigationManager { get; set; }
     }
 }
 #pragma warning restore 1591

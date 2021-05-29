@@ -1,5 +1,10 @@
 ﻿@page "/hotel-room/create"
-@using global::Models
+@page "/hotel-room/edit/{Id:int}"
+
+@inject NavigationManager _navigationManager;
+@inject IHotelRoomRepository _hotelRoomRepository;
+@inject IJSRuntime _jsRunTime;
+@inject IFileUpload _fileUpload;
 
 
 <div class="row mt-2 mb-5">
@@ -7,9 +12,61 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <EditForm Model="HotelRoomModel">
+                <EditForm Model="HotelRoomDto" OnValidSubmit="HandleHotelRoomUpsert">
+                    <DataAnnotationsValidator></DataAnnotationsValidator>
+                    @*<ValidationSummary></ValidationSummary>*@
+                    <div class="form-group">
+                        <label>Name</label>
+                        <InputText @bind-Value="HotelRoomDto.Name" class="form-control" />
+                        <ValidationMessage For="()=> HotelRoomDto.Name"></ValidationMessage>
+                    </div>
+                    <div class="form-group">
+                        <label>Occupancy</label>
+                        <InputNumber @bind-Value="HotelRoomDto.Occupancy" class="form-control" />
+                        <ValidationMessage For="()=> HotelRoomDto.Occupancy"></ValidationMessage>
+                    </div>
+                    <div class="form-group">
+                        <label>Rate</label>
+                        <InputNumber @bind-Value="HotelRoomDto.RegularRate" class="form-control" />
+                        <ValidationMessage For="()=> HotelRoomDto.RegularRate"></ValidationMessage>
+                    </div>
+                    <div class="form-group">
+                        <label>Sq Ft</label>
+                        <InputText @bind-Value="HotelRoomDto.SqFt" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Details</label>
+                        <InputTextArea @bind-Value="HotelRoomDto.Details" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <InputFile OnChange="HandleImageUpload" multiple></InputFile>
+                        <div class="row">
+                            @if (HotelRoomDto.ImagesUrls != null && HotelRoomDto.ImagesUrls.Count > 0)
+                            {
+                                int roomImageNumber = 1;
+                                foreach (var roomImage in HotelRoomDto.ImagesUrls)
+                                {
+                            <div class="col-md-2 mt-3">
+                                <div class="room-image" style="background: url('@roomImage') 50% 50%;">
+                                    <span class="room-image-title">@roomImageNumber</span>
+                                </div>
+                                <button type="button" class="btn btn-outline-danger btn-block mt-4">
+                                    Delete
+                                </button>
+                            </div>
+                                    roomImageNumber++;
+                                }
+                            }
+                        </div>
+                        
+                    </div>
 
 
+                    <div class="form-group">
+                        <button class="btn btn-primary">@Title Room </button>
+                        <NavLink href="hotel-room" class="btn btn-secondary">Back to Index</NavLink>
+                    </div>
                 </EditForm>
             </div>
         </div>
@@ -19,7 +76,106 @@
 
 @code {
 
-    private HotelRoomDTO HotelRoomModel { get; set; } = new HotelRoomDTO();
+    [Parameter]
+    public int? Id { get; set; }
+
+    private HotelRoomDTO HotelRoomDto { get; set; } = new HotelRoomDTO();
     private string Title { get; set; } = "Create";
+
+    protected async override Task OnInitializedAsync()
+    {
+        if (Id != null)
+        {
+            Title = "Update";
+            HotelRoomDto = await _hotelRoomRepository.GetHotelRoom(Id.Value);
+        }
+        else
+        {
+            Title = "Create";
+            HotelRoomDto = new HotelRoomDTO();
+        }
+    }
+
+    private async Task HandleHotelRoomUpsert()
+    {
+        try
+        {
+            var roomDetailsByName = await _hotelRoomRepository.IsRoomUnique(HotelRoomDto.Name, HotelRoomDto.Id);
+
+            if (roomDetailsByName != null)
+            {
+                await _jsRunTime.ToastrError("Room name already exists.");
+                return;
+            }
+
+
+            if (HotelRoomDto.Id != 0 && Title == "Update")
+            {
+                var updateResult = await _hotelRoomRepository.UpdateHotelRoom(HotelRoomDto, HotelRoomDto.Id);
+                await _jsRunTime.ToastrSuccess("Hotel room updated successfully.");
+            }
+            else
+            {
+                var createdResult = await _hotelRoomRepository.CreateHotelRoom(HotelRoomDto);
+                await _jsRunTime.ToastrSuccess("Hotel room created successfully.");
+            }
+        }
+        catch(Exception ex)
+        {
+            // log exception
+        }
+
+        _navigationManager.NavigateTo("hotel-room");
+    }
+
+    private async Task HandleImageUpload(InputFileChangeEventArgs e)
+    {
+        try
+        {
+            var images = new List<string>();
+            if (e.GetMultipleFiles().Count > 0)
+            {
+                foreach(var file in e.GetMultipleFiles())
+                {
+                    System.IO.FileInfo fileInfo = new System.IO.FileInfo(file.Name);
+                    if (fileInfo.Extension.ToLower() == ".jpg" ||
+                        fileInfo.Extension.ToLower() == ".png" ||
+                        fileInfo.Extension.ToLower() == ".jpeg")
+                    {
+                        var uploadedImagePath = await _fileUpload.UploadFile(file);
+                        images.Add(uploadedImagePath);
+                    }
+                    else
+                    {
+                        await _jsRunTime.ToastrError("Please select .jpg/.jpeg/.png files only");
+                        return;
+                    }
+                };
+
+                if (images.Any())
+                {
+                    if(HotelRoomDto.ImagesUrls != null && HotelRoomDto.ImagesUrls.Any())
+                    {
+                        HotelRoomDto.ImagesUrls.AddRange(images);
+                    }
+                    else
+                    {
+                        HotelRoomDto.ImagesUrls = new List<string>();
+                        HotelRoomDto.ImagesUrls.AddRange(images);
+                    }
+                }
+                else
+                {
+                    await _jsRunTime.ToastrError("Image uploading failed.");
+                    return;
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            await _jsRunTime.ToastrError("Something happened while uploading images." + ex.Message);
+            return;
+        }
+    }
 
 }

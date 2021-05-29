@@ -103,6 +103,27 @@ using Models;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 15 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\_Imports.razor"
+using HiddenVilla_Server.Helper;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 16 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\_Imports.razor"
+using Business.Repository.IRepository;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 18 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\_Imports.razor"
+using HiddenVilla_Server.Services.Interfaces;
+
+#line default
+#line hidden
+#nullable disable
     public partial class ChildComponent : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -111,7 +132,7 @@ using Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 28 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\Pages\LearnBlazor\LearnBlazorComponent\ChildComponent.razor"
+#line 30 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\Pages\LearnBlazor\LearnBlazorComponent\ChildComponent.razor"
        
     [Parameter]
     public string Title { get; set; }
@@ -125,10 +146,16 @@ using Models;
     [Parameter]
     public EventCallback<MouseEventArgs> OnClickBtnMethod { get; set; }
 
+    public async Task ShowToastrSuccess()
+    {
+        await _jsRuntime.ToastrSuccess("Whooohooo! Success is on its way!");
+    }
+
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime _jsRuntime { get; set; }
     }
 }
 #pragma warning restore 1591

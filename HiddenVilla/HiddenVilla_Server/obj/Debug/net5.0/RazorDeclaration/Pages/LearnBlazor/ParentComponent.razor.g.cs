@@ -103,6 +103,27 @@ using Models;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 15 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\_Imports.razor"
+using HiddenVilla_Server.Helper;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 16 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\_Imports.razor"
+using Business.Repository.IRepository;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 18 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\_Imports.razor"
+using HiddenVilla_Server.Services.Interfaces;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/ParentComponent")]
     public partial class ParentComponent : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -112,7 +133,7 @@ using Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 20 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\Pages\LearnBlazor\ParentComponent.razor"
+#line 26 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\Pages\LearnBlazor\ParentComponent.razor"
        
 
     //[Parameter]
@@ -122,6 +143,8 @@ using Models;
     //    {"placeholder", "Enter the Room Name From Parent" },
     //    {"maxlength", 5 }
     //};
+
+    private ChildComponent _childCompRef;
 
     private int _luckyNumber { get; set; } = 7;
     private string _messageForGrandChild = "This is a message from grandparent.";
