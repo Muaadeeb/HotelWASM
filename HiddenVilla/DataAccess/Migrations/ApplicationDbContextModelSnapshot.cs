@@ -19,6 +19,46 @@ namespace DataAccess.Migrations
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("DataAccess.Data.HotelAmenity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IconStyle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Timming")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HotelAmenities");
+                });
+
             modelBuilder.Entity("DataAccess.Data.HotelRoom", b =>
                 {
                     b.Property<int>("Id")
@@ -82,12 +122,17 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Data.HotelRoomImage", b =>
                 {
                     b.HasOne("DataAccess.Data.HotelRoom", "HotelRoom")
-                        .WithMany()
+                        .WithMany("HotelRoomImages")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("HotelRoom");
+                });
+
+            modelBuilder.Entity("DataAccess.Data.HotelRoom", b =>
+                {
+                    b.Navigation("HotelRoomImages");
                 });
 #pragma warning restore 612, 618
         }

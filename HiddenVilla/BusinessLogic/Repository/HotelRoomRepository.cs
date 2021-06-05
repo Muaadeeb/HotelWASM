@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +40,8 @@ namespace Business.Repository
         {
             try
             {
-                IEnumerable<HotelRoomDTO> hotelRoomDTOs = _mapper.Map<IEnumerable<HotelRoom>, IEnumerable<HotelRoomDTO>> (_dbContext.HotelRooms);
+                IEnumerable<HotelRoomDTO> hotelRoomDTOs = 
+                    _mapper.Map<IEnumerable<HotelRoom>, IEnumerable<HotelRoomDTO>> (_dbContext.HotelRooms.Include(y => y.HotelRoomImages));
 
                 return hotelRoomDTOs;
             }
@@ -56,7 +58,7 @@ namespace Business.Repository
                 //return _mapper.Map<HotelRoom, HotelRoomDTO>(await _dbContext.HotelRooms.FirstOrDefaultAsync(x => x.Id == roomId));
 
                 HotelRoomDTO hotelRoom = _mapper.Map<HotelRoom,HotelRoomDTO>(
-                        await _dbContext.HotelRooms.FirstOrDefaultAsync(x => x.Id == roomId)
+                        await _dbContext.HotelRooms.Include(y => y.HotelRoomImages).FirstOrDefaultAsync(x => x.Id == roomId)
                     );
 
                 return hotelRoom;
@@ -124,6 +126,9 @@ namespace Business.Repository
             var roomDetails = await _dbContext.HotelRooms.FindAsync(roomId);
             if (roomDetails != null)
             {
+                var allImages = await _dbContext.HotelRoomImages.Where(x => x.RoomId == roomId).ToListAsync();
+
+                _dbContext.HotelRoomImages.RemoveRange(allImages);
                 _dbContext.HotelRooms.Remove(roomDetails);
                 return await _dbContext.SaveChangesAsync();
             }

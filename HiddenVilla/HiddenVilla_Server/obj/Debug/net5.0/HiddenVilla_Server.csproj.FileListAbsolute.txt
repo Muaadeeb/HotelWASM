@@ -182,3 +182,10 @@ C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVi
 C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\obj\Debug\net5.0\Razor\Pages\HotelRoom\HotelRoomUpsert.razor.g.cs
 C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\obj\Debug\net5.0\RazorDeclaration\Pages\LearnBlazor\BlazorJS.razor.g.cs
 C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\obj\Debug\net5.0\Razor\Pages\LearnBlazor\BlazorJS.razor.g.cs
+C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\obj\Debug\net5.0\RazorDeclaration\Shared\DeleteConfirmation.razor.g.cs
+C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\obj\Debug\net5.0\Razor\Shared\DeleteConfirmation.razor.g.cs
+C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\bin\Debug\net5.0\Blazored.TextEditor.dll
+C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\obj\Debug\net5.0\RazorDeclaration\Pages\HotelAmenity\HotelAmenityList.razor.g.cs
+C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\obj\Debug\net5.0\RazorDeclaration\Pages\HotelAmenity\HotelAmenityUpsert.razor.g.cs
+C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\obj\Debug\net5.0\Razor\Pages\HotelAmenity\HotelAmenityList.razor.g.cs
+C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\obj\Debug\net5.0\Razor\Pages\HotelAmenity\HotelAmenityUpsert.razor.g.cs

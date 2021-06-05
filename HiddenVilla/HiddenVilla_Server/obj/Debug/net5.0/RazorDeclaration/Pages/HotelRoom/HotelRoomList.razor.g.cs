@@ -118,6 +118,13 @@ using HiddenVilla_Server.Services.Interfaces;
 #line hidden
 #nullable disable
 #nullable restore
+#line 19 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\_Imports.razor"
+using Blazored.TextEditor;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 3 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\Pages\HotelRoom\HotelRoomList.razor"
 using Business.Repository.IRepository;
 
@@ -133,20 +140,52 @@ using Business.Repository.IRepository;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 58 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\Pages\HotelRoom\HotelRoomList.razor"
+#line 62 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\Pages\HotelRoom\HotelRoomList.razor"
        
-
     private IEnumerable<HotelRoomDTO> HotelRooms { get; set; } = new List<HotelRoomDTO>();
+    private int? DeleteRoomId { get; set; } = null;
+    //private bool IsDeleteProcessComplete { get; set; } = false;
+    private bool IsProcessing { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
         HotelRooms = await _hotelRoomRepository.GetAllHotelRooms();
     }
 
+    private async Task HandleDelete(int roomId)
+    {
+        DeleteRoomId = roomId;
+        //IsDeleteProcessComplete = false;
+        await _jsRunTime.InvokeVoidAsync("ShowDeleteConfirmationModal");
+    }
+
+    public async Task ConfirmDelete_Click(bool isConfirmed)
+    {
+        IsProcessing = true;
+        if (isConfirmed && DeleteRoomId != null)
+        {
+            HotelRoomDTO hotelRoomDto = await _hotelRoomRepository.GetHotelRoom(DeleteRoomId.Value);
+            foreach (var image in hotelRoomDto.HotelRoomImages)
+            {
+                var imageName = image.RoomImageUrl.Replace($"RoomImages/", "");
+                _fileUpload.DeleteFile(imageName);
+            }
+
+
+            await _hotelRoomRepository.DeleteHotelRoom(DeleteRoomId.Value);
+            await _jsRunTime.ToastrSuccess("Hotel Room Deleted successfully");
+            HotelRooms = await _hotelRoomRepository.GetAllHotelRooms();
+        }
+
+        await _jsRunTime.InvokeVoidAsync("HideDeleteConfirmationModal");
+        IsProcessing = false;
+    }
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private HiddenVilla_Server.Services.Interfaces.IFileUpload _fileUpload { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime _jsRunTime { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IHotelRoomRepository _hotelRoomRepository { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager _navigationManager { get; set; }
     }

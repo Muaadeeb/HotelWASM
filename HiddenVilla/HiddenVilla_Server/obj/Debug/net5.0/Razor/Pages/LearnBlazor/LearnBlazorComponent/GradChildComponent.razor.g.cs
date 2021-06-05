@@ -121,6 +121,13 @@ using HiddenVilla_Server.Services.Interfaces;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 19 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\_Imports.razor"
+using Blazored.TextEditor;
+
+#line default
+#line hidden
+#nullable disable
     public partial class GradChildComponent : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
