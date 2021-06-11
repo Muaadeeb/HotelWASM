@@ -47,6 +47,7 @@ namespace HiddenVilla_Server
 
             services.AddScoped<IFileUpload, FileUpload>();
 
+            services.AddHttpContextAccessor();
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
@@ -71,8 +72,13 @@ namespace HiddenVilla_Server
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });

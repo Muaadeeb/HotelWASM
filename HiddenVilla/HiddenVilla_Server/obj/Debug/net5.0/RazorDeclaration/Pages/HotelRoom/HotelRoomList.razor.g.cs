@@ -167,7 +167,7 @@ using Business.Repository.IRepository;
             HotelRoomDTO hotelRoomDto = await _hotelRoomRepository.GetHotelRoom(DeleteRoomId.Value);
             foreach (var image in hotelRoomDto.HotelRoomImages)
             {
-                var imageName = image.RoomImageUrl.Replace($"RoomImages/", "");
+                var imageName = image.RoomImageUrl.Replace($"{_navigationManager.BaseUri}RoomImages/", "");
                 _fileUpload.DeleteFile(imageName);
             }
 
