@@ -1,3 +1,4 @@
+using API.Helper;
 using Business.Repository;
 using Business.Repository.IRepository;
 using DataAccess.Data;
@@ -36,6 +37,9 @@ namespace API
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
+            var appsettingsSection = Configuration.GetSection("APISettings");
+            services.Configure<APISettings>(appsettingsSection);
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IHotelRoomRepository, HotelRoomRepository>();
