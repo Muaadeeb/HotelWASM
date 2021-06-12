@@ -16,6 +16,7 @@ using Business.Repository.IRepository;
 using Business.Repository;
 using HiddenVilla_Server.Services.Interfaces;
 using HiddenVilla_Server.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace HiddenVilla_Server
 {
@@ -40,6 +41,14 @@ namespace HiddenVilla_Server
             services.AddDbContext<ApplicationDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+
+            //TODO: THis now breaks after we did update for NAME - c.f. API project startup - ApplicationUser.
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders()
+                .AddDefaultUI();
+
+            services.AddScoped<IDbInitializer, DbInitializer>();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IHotelRoomRepository, HotelRoomRepository>();
             services.AddScoped<IHotelImageRepository, HotelImageRepository>();
@@ -54,7 +63,7 @@ namespace HiddenVilla_Server
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDbInitializer dbInitializer )
         {
             if (env.IsDevelopment())
             {
@@ -74,7 +83,7 @@ namespace HiddenVilla_Server
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            dbInitializer.Initalize();
 
             app.UseEndpoints(endpoints =>
             {

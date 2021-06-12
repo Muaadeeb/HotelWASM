@@ -141,202 +141,219 @@ using Blazored.TextEditor;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 118 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\Pages\HotelRoom\HotelRoomUpsert.razor"
+#line 120 "C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\HiddenVilla_Server\Pages\HotelRoom\HotelRoomUpsert.razor"
        
 
-        [Parameter]
-        public int? Id { get; set; }
+    [Parameter]
+    public int? Id { get; set; }
 
-        private HotelRoomDTO HotelRoomDto { get; set; } = new HotelRoomDTO();
-        private string Title { get; set; } = "Create";
+    private HotelRoomDTO HotelRoomDto { get; set; } = new HotelRoomDTO();
+    private string Title { get; set; } = "Create";
 
-        private HotelRoomImageDTO RoomImage { get; set; } = new HotelRoomImageDTO();
-        private List<string> DeletedImageNames { get; set; } = new List<string>();
+    private HotelRoomImageDTO RoomImage { get; set; } = new HotelRoomImageDTO();
+    private List<string> DeletedImageNames { get; set; } = new List<string>();
 
-        private bool IsImageUploadProcessStarted { get; set; } = false;
+    private bool IsImageUploadProcessStarted { get; set; } = false;
 
-        public BlazoredTextEditor QuillHtml { get; set; } = new BlazoredTextEditor();
+    public BlazoredTextEditor QuillHtml { get; set; } = new BlazoredTextEditor();
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationState { get; set; }
 
 
-        protected async override Task OnInitializedAsync()
+    protected async override Task OnInitializedAsync()
+    {
+        var authenticationState = await AuthenticationState;
+        //if (!authenticationState.User.Identity.IsAuthenticated)
+        if (!authenticationState.User.IsInRole(Common.StaticDetails.Role_Admin))
         {
-            if (Id != null)
-            {
-                Title = "Update";
-                HotelRoomDto = await _hotelRoomRepository.GetHotelRoom(Id.Value);
+            var uri = new Uri(_navigationManager.Uri);
+            _navigationManager.NavigateTo($"/identity/account/login?returnUrl={uri.LocalPath}");
+        }
 
-                if (HotelRoomDto?.HotelRoomImages != null)
+        //if (authenticationState.User.IsInRole("Admin"))
+        //{
+
+        //}
+
+
+        if (Id != null)
+        {
+            Title = "Update";
+            HotelRoomDto = await _hotelRoomRepository.GetHotelRoom(Id.Value);
+
+            if (HotelRoomDto?.HotelRoomImages != null)
+            {
+                HotelRoomDto.ImagesUrls = HotelRoomDto.HotelRoomImages.Select(x => x.RoomImageUrl).ToList();
+            }
+        }
+        else
+        {
+            Title = "Create";
+            HotelRoomDto = new HotelRoomDTO();
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        bool loading = true;
+        while (loading)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(HotelRoomDto.Details))
                 {
-                    HotelRoomDto.ImagesUrls = HotelRoomDto.HotelRoomImages.Select(x => x.RoomImageUrl).ToList();
+                    await QuillHtml.LoadHTMLContent(HotelRoomDto.Details);
                 }
+
+                loading = false;
+            }
+            catch
+            {
+                await Task.Delay(10);
+                loading = true;
+                await _jsRunTime.ToastrError("Possible issue with loading html text content - worry if you keep seeing this popup.");
+            }
+        }
+    }
+
+    private async Task HandleHotelRoomUpsert()
+    {
+        try
+        {
+            var roomDetailsByName = await _hotelRoomRepository.IsRoomUnique(HotelRoomDto.Name, HotelRoomDto.Id);
+
+            if (roomDetailsByName != null)
+            {
+                await _jsRunTime.ToastrError("Room name already exists.");
+                return;
+            }
+
+            HotelRoomDto.Details = await QuillHtml.GetHTML();
+            if (HotelRoomDto.Id != 0 && Title == "Update")
+            {
+                var updateResult = await _hotelRoomRepository.UpdateHotelRoom(HotelRoomDto, HotelRoomDto.Id);
+
+                if (HotelRoomDto.ImagesUrls != null && HotelRoomDto.ImagesUrls.Any() ||
+                    DeletedImageNames != null && DeletedImageNames.Any())
+                {
+                    if (DeletedImageNames != null && DeletedImageNames.Any())
+                    {
+                        foreach (var deletedImageName in DeletedImageNames)
+                        {
+                            var imageName = deletedImageName.Replace($"{_navigationManager.BaseUri}RoomImages/", "");
+                            var result = _fileUpload.DeleteFile(imageName);
+                            await _hotelImageRepository.DeleteHotelRoomImageByImageUrl(deletedImageName);
+                        }
+                    }
+
+                    await AddHotelRoomImage(updateResult);
+                }
+
+                await _jsRunTime.ToastrSuccess("Hotel room updated successfully.");
             }
             else
             {
-                Title = "Create";
-                HotelRoomDto = new HotelRoomDTO();
+                var createdResult = await _hotelRoomRepository.CreateHotelRoom(HotelRoomDto);
+                await AddHotelRoomImage(createdResult);
+                await _jsRunTime.ToastrSuccess("Hotel room created successfully.");
             }
         }
-
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        catch (Exception ex)
         {
-            if (!firstRender)
-            {
-                return;
-            }
-
-            bool loading = true;
-            while (loading)
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(HotelRoomDto.Details))
-                    {
-                        await QuillHtml.LoadHTMLContent(HotelRoomDto.Details);
-                    }
-
-                    loading = false;
-                }
-                catch
-                {
-                    await Task.Delay(10);
-                    loading = true;
-                    await _jsRunTime.ToastrError("Possible issue with loading html text content - worry if you keep seeing this popup.");
-                }
-            }
+            // log exception
         }
 
-        private async Task HandleHotelRoomUpsert()
+        _navigationManager.NavigateTo("hotel-room");
+    }
+
+    private async Task HandleImageUpload(InputFileChangeEventArgs e)
+    {
+        IsImageUploadProcessStarted = true;
+
+        try
         {
-            try
+            var images = new List<string>();
+            if (e.GetMultipleFiles().Count > 0)
             {
-                var roomDetailsByName = await _hotelRoomRepository.IsRoomUnique(HotelRoomDto.Name, HotelRoomDto.Id);
-
-                if (roomDetailsByName != null)
+                foreach (var file in e.GetMultipleFiles())
                 {
-                    await _jsRunTime.ToastrError("Room name already exists.");
-                    return;
-                }
-
-                HotelRoomDto.Details = await QuillHtml.GetHTML();
-                if (HotelRoomDto.Id != 0 && Title == "Update")
-                {
-                    var updateResult = await _hotelRoomRepository.UpdateHotelRoom(HotelRoomDto, HotelRoomDto.Id);
-
-                    if (HotelRoomDto.ImagesUrls != null && HotelRoomDto.ImagesUrls.Any() ||
-                        DeletedImageNames != null && DeletedImageNames.Any())
+                    System.IO.FileInfo fileInfo = new System.IO.FileInfo(file.Name);
+                    if (fileInfo.Extension.ToLower() == ".jpg" ||
+                        fileInfo.Extension.ToLower() == ".png" ||
+                        fileInfo.Extension.ToLower() == ".jpeg")
                     {
-                        if (DeletedImageNames != null && DeletedImageNames.Any())
-                        {
-                            foreach(var deletedImageName in DeletedImageNames)
-                            {
-                                var imageName = deletedImageName.Replace($"{_navigationManager.BaseUri}RoomImages/", "");
-                                var result = _fileUpload.DeleteFile(imageName);
-                                await _hotelImageRepository.DeleteHotelRoomImageByImageUrl(deletedImageName);
-                            }
-                        }
-
-                        await AddHotelRoomImage(updateResult);
-                    }
-
-                    await _jsRunTime.ToastrSuccess("Hotel room updated successfully.");
-                }
-                else
-                {
-                    var createdResult = await _hotelRoomRepository.CreateHotelRoom(HotelRoomDto);
-                    await AddHotelRoomImage(createdResult);
-                    await _jsRunTime.ToastrSuccess("Hotel room created successfully.");
-                }
-            }
-            catch(Exception ex)
-            {
-                // log exception
-            }
-
-            _navigationManager.NavigateTo("hotel-room");
-        }
-
-        private async Task HandleImageUpload(InputFileChangeEventArgs e)
-        {
-            IsImageUploadProcessStarted = true;
-
-            try
-            {
-                var images = new List<string>();
-                if (e.GetMultipleFiles().Count > 0)
-                {
-                    foreach(var file in e.GetMultipleFiles())
-                    {
-                        System.IO.FileInfo fileInfo = new System.IO.FileInfo(file.Name);
-                        if (fileInfo.Extension.ToLower() == ".jpg" ||
-                            fileInfo.Extension.ToLower() == ".png" ||
-                            fileInfo.Extension.ToLower() == ".jpeg")
-                        {
-                            var uploadedImagePath = await _fileUpload.UploadFile(file);
-                            images.Add(uploadedImagePath);
-                        }
-                        else
-                        {
-                            await _jsRunTime.ToastrError("Please select .jpg/.jpeg/.png files only");
-                            return;
-                        }
-                    };
-
-                    if (images.Any())
-                    {
-                        if(HotelRoomDto.ImagesUrls != null && HotelRoomDto.ImagesUrls.Any())
-                        {
-                            HotelRoomDto.ImagesUrls.AddRange(images);
-                        }
-                        else
-                        {
-                            HotelRoomDto.ImagesUrls = new List<string>();
-                            HotelRoomDto.ImagesUrls.AddRange(images);
-                        }
+                        var uploadedImagePath = await _fileUpload.UploadFile(file);
+                        images.Add(uploadedImagePath);
                     }
                     else
                     {
-                        await _jsRunTime.ToastrError("Image uploading failed.");
+                        await _jsRunTime.ToastrError("Please select .jpg/.jpeg/.png files only");
                         return;
                     }
-                }
-            }
-            catch(Exception ex)
-            {
-                await _jsRunTime.ToastrError("Something happened while uploading images." + ex.Message);
-                return;
-            }
-            finally
-            {
-                IsImageUploadProcessStarted = false;
-            }
-        }
+                };
 
-        private async Task AddHotelRoomImage(HotelRoomDTO roomdetails)
-        {
-            if (HotelRoomDto.ImagesUrls != null)
-            {
-                foreach (var imageUrl in HotelRoomDto.ImagesUrls)
+                if (images.Any())
                 {
-                    if (HotelRoomDto.HotelRoomImages == null || HotelRoomDto.HotelRoomImages.Where(x => x.RoomImageUrl == imageUrl).Count() == 0)
+                    if (HotelRoomDto.ImagesUrls != null && HotelRoomDto.ImagesUrls.Any())
                     {
-                        RoomImage = new HotelRoomImageDTO()
-                        {
-                            RoomId = roomdetails.Id,
-                            RoomImageUrl = imageUrl
-                        };
-                        await _hotelImageRepository.CreateHotelRoomImage(RoomImage);
+                        HotelRoomDto.ImagesUrls.AddRange(images);
+                    }
+                    else
+                    {
+                        HotelRoomDto.ImagesUrls = new List<string>();
+                        HotelRoomDto.ImagesUrls.AddRange(images);
                     }
                 }
+                else
+                {
+                    await _jsRunTime.ToastrError("Image uploading failed.");
+                    return;
+                }
             }
         }
-
-        internal async Task DeletePhoto(string imageUrl)
+        catch (Exception ex)
         {
-            var showMessageText = string.Empty;
-            try
+            await _jsRunTime.ToastrError("Something happened while uploading images." + ex.Message);
+            return;
+        }
+        finally
+        {
+            IsImageUploadProcessStarted = false;
+        }
+    }
+
+    private async Task AddHotelRoomImage(HotelRoomDTO roomdetails)
+    {
+        if (HotelRoomDto.ImagesUrls != null)
+        {
+            foreach (var imageUrl in HotelRoomDto.ImagesUrls)
             {
-                var imageIndex = HotelRoomDto.ImagesUrls.FindIndex(x => x == imageUrl);
-                var imageName = imageUrl.Replace($"{_navigationManager.BaseUri}RoomImages/", "");
+                if (HotelRoomDto.HotelRoomImages == null || HotelRoomDto.HotelRoomImages.Where(x => x.RoomImageUrl == imageUrl).Count() == 0)
+                {
+                    RoomImage = new HotelRoomImageDTO()
+                    {
+                        RoomId = roomdetails.Id,
+                        RoomImageUrl = imageUrl
+                    };
+                    await _hotelImageRepository.CreateHotelRoomImage(RoomImage);
+                }
+            }
+        }
+    }
+
+    internal async Task DeletePhoto(string imageUrl)
+    {
+        var showMessageText = string.Empty;
+        try
+        {
+            var imageIndex = HotelRoomDto.ImagesUrls.FindIndex(x => x == imageUrl);
+            var imageName = imageUrl.Replace($"{_navigationManager.BaseUri}RoomImages/", "");
 
             if (HotelRoomDto.Id == 0 && Title == "Create")
             {
@@ -353,8 +370,8 @@ using Blazored.TextEditor;
         catch (Exception ex)
         {
             await _jsRunTime.ToastrError(ex.Message);
+        }
     }
-}
 
 #line default
 #line hidden

@@ -7,6 +7,8 @@
 @inject IJSRuntime _jsRunTime;
 @inject HiddenVilla_Server.Services.Interfaces.IFileUpload _fileUpload;
 
+@attribute [Authorize(Roles = Common.StaticDetails.Role_Admin)]
+
 <div class="row mt-4">
     <div class="col">
         <h4 class="card-title text-info">Hotel Room's</h4>
@@ -31,7 +33,7 @@
             <tbody>
                 @if (HotelRooms.Any())
                 {
-                    foreach(var room in HotelRooms)
+                    foreach (var room in HotelRooms)
                     {
                         <tr>
                             <td>@room.Name</td>

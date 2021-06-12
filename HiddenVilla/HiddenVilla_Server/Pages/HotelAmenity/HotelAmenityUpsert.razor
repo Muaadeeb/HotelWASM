@@ -3,9 +3,9 @@
 @using Business.Repository.IRepository
 @using Models
 @inject IAmenityRepository AmenityRepository
-@inject NavigationManager NavigationManager
+@inject NavigationManager _navigationManager
 @inject IJSRuntime jsRuntime
-@*@attribute [Authorize(Roles = Common.SD.Role_Admin)]*@
+
 
 <div class="row mt-2 mb-5">
     <h3 class="card-title text-info mb-3 ml-3">@Title Hotel Amenity</h3>
@@ -62,11 +62,21 @@
 
     internal bool IsProcessingStart { get; set; } = false;
 
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationState { get; set; }
+
+
     protected override async Task OnInitializedAsync()
     {
+        var authenticationState = await AuthenticationState;
+        if (!authenticationState.User.IsInRole(Common.StaticDetails.Role_Admin))
+        {
+            var uri = new Uri(_navigationManager.Uri);
+            _navigationManager.NavigateTo($"/identity/account/login?returnUrl={uri.LocalPath}");
+        }
+
         if (Id != null)
         {
-            //we work with update
             Title = "Update";
 
             HotelAmenityModel = await AmenityRepository.GetHotelAmenity(Id.Value);
@@ -76,8 +86,6 @@
             HotelAmenityModel = new HotelAmenityDTO();
         }
     }
-
-
 
     internal async Task HandleHotelAmenityCreate()
     {
@@ -93,7 +101,7 @@
                     await jsRuntime.ToastrError("Hotel Amenity already exists.");
                     return;
                 }
-                //Update the hotel amenity here
+                
                 var updateAmenityResult = await AmenityRepository.UpdateHotelAmenity(HotelAmenityModel.Id, HotelAmenityModel);
 
 
@@ -107,15 +115,13 @@
                 {
                     await jsRuntime.ToastrError("Hotel Amenity name is already exists.");
                 }
-
-
-                //Create new Hotel Amenity here
+                
                 var createdResult = await AmenityRepository.CreateHotelAmenity(HotelAmenityModel);
                 HotelAmenityModel = new HotelAmenityDTO();
                 await jsRuntime.ToastrSuccess("Hotel amenity created successfully.");
 
             }
-            NavigationManager.NavigateTo("hotel-amenity");
+            _navigationManager.NavigateTo("hotel-amenity");
             IsProcessingStart = false;
 
         }
@@ -124,6 +130,4 @@
             IsProcessingStart = false;
         }
     }
-
-
 }
