@@ -156,7 +156,7 @@ using Business.Repository.IRepository;
 
     protected override async Task OnInitializedAsync()
     {
-        HotelRooms = await _hotelRoomRepository.GetAllHotelRooms();
+        HotelRooms = await _hotelRoomRepository.GetAllHotelRoomsAsync();
     }
 
     private async Task HandleDelete(int roomId)
@@ -171,7 +171,7 @@ using Business.Repository.IRepository;
         IsProcessing = true;
         if (isConfirmed && DeleteRoomId != null)
         {
-            HotelRoomDTO hotelRoomDto = await _hotelRoomRepository.GetHotelRoom(DeleteRoomId.Value);
+            HotelRoomDTO hotelRoomDto = await _hotelRoomRepository.GetHotelRoomAsync(DeleteRoomId.Value);
             foreach (var image in hotelRoomDto.HotelRoomImages)
             {
                 var imageName = image.RoomImageUrl.Replace($"{_navigationManager.BaseUri}RoomImages/", "");
@@ -179,9 +179,9 @@ using Business.Repository.IRepository;
             }
 
 
-            await _hotelRoomRepository.DeleteHotelRoom(DeleteRoomId.Value);
+            await _hotelRoomRepository.DeleteHotelRoomAsync(DeleteRoomId.Value);
             await _jsRunTime.ToastrSuccess("Hotel Room Deleted successfully");
-            HotelRooms = await _hotelRoomRepository.GetAllHotelRooms();
+            HotelRooms = await _hotelRoomRepository.GetAllHotelRoomsAsync();
         }
 
         await _jsRunTime.InvokeVoidAsync("HideDeleteConfirmationModal");

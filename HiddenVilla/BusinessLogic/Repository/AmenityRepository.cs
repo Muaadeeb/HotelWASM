@@ -22,7 +22,7 @@ namespace Business.Repository
             _mapper = mapper;
         }
 
-        public async Task<HotelAmenityDTO> CreateHotelAmenity(HotelAmenityDTO hotelAmenity)
+        public async Task<HotelAmenityDTO> CreateHotelAmenityAsync(HotelAmenityDTO hotelAmenity)
         {
             var amenity = _mapper.Map<HotelAmenityDTO, HotelAmenity>(hotelAmenity);
             amenity.CreatedBy = "";
@@ -32,7 +32,7 @@ namespace Business.Repository
             return _mapper.Map<HotelAmenity, HotelAmenityDTO>(addedHotelAmenity.Entity);
         }
 
-        public async Task<HotelAmenityDTO> UpdateHotelAmenity(int amenityId, HotelAmenityDTO hotelAmenity)
+        public async Task<HotelAmenityDTO> UpdateHotelAmenityAsync(int amenityId, HotelAmenityDTO hotelAmenity)
         {
             var amenityDetails = await _context.HotelAmenities.FindAsync(amenityId);
             var amenity = _mapper.Map<HotelAmenityDTO, HotelAmenity>(hotelAmenity, amenityDetails);
@@ -43,7 +43,7 @@ namespace Business.Repository
             return _mapper.Map<HotelAmenity, HotelAmenityDTO>(updatedamenity.Entity);
         }
 
-        public async Task<int> DeleteHotelAmenity(int amenityId, string userId)
+        public async Task<int> DeleteHotelAmenityAsync(int amenityId, string userId)
         {
             var amenityDetails = await _context.HotelAmenities.FindAsync(amenityId);
             if (amenityDetails != null)
@@ -54,12 +54,12 @@ namespace Business.Repository
             return 0;
         }
 
-        public async Task<IEnumerable<HotelAmenityDTO>> GetAllHotelAmenity()
+        public async Task<IEnumerable<HotelAmenityDTO>> GetAllHotelAmenityAsync()
         {
             return _mapper.Map<IEnumerable<HotelAmenity>, IEnumerable<HotelAmenityDTO>>(await _context.HotelAmenities.ToListAsync());
         }
 
-        public async Task<HotelAmenityDTO> GetHotelAmenity(int amenityId)
+        public async Task<HotelAmenityDTO> GetHotelAmenityAsync(int amenityId)
         {
             var amenityData = await _context.HotelAmenities
                 .FirstOrDefaultAsync(x => x.Id == amenityId);
@@ -71,7 +71,7 @@ namespace Business.Repository
             return _mapper.Map<HotelAmenity, HotelAmenityDTO>(amenityData);
         }
 
-        public async Task<HotelAmenityDTO> IsSameNameAmenityAlreadyExists(string name)
+        public async Task<HotelAmenityDTO> IsSameNameAmenityAlreadyExistsAsync(string name)
         {
             try
             {

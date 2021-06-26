@@ -22,21 +22,21 @@ namespace Business.Repository
             _mapper = mapper;
         }
 
-        public async Task<int> CreateHotelRoomImage(HotelRoomImageDTO imageDTO)
+        public async Task<int> CreateHotelRoomImageAsync(HotelRoomImageDTO imageDTO)
         {
             var image = _mapper.Map<HotelRoomImageDTO, HotelRoomImage>(imageDTO);
             await _dbContext.HotelRoomImages.AddAsync(image);
             return await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteHotelRoomImageByImageId(int imageId)
+        public async Task<int> DeleteHotelRoomImageByImageIdAsync(int imageId)
         {
             var image = await _dbContext.HotelRoomImages.FindAsync(imageId);
             _dbContext.HotelRoomImages.Remove(image);
             return await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteHotelRoomImageByImageUrl(string imageUrl)
+        public async Task<int> DeleteHotelRoomImageByImageUrlAsync(string imageUrl)
         {
             var allImages = await _dbContext.HotelRoomImages.FirstOrDefaultAsync(x => x.RoomImageUrl.ToLower() == imageUrl.ToLower());
 
@@ -49,7 +49,7 @@ namespace Business.Repository
             return await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteHotelRoomImageByRoomId(int roomId)
+        public async Task<int> DeleteHotelRoomImageByRoomIdAsync(int roomId)
         {
             var imageList = await _dbContext.HotelRoomImages.Where(x => x.RoomId == roomId).ToListAsync();
             _dbContext.HotelRoomImages.RemoveRange(imageList);
@@ -57,7 +57,7 @@ namespace Business.Repository
 
         }
 
-        public async Task<IEnumerable<HotelRoomImageDTO>> GetHotelRoomImagesByRoomId(int roomId)
+        public async Task<IEnumerable<HotelRoomImageDTO>> GetHotelRoomImagesByRoomIdAsync(int roomId)
         {
             return _mapper.Map<IEnumerable<HotelRoomImage>,IEnumerable<HotelRoomImageDTO>>(
                 await _dbContext.HotelRoomImages.Where(x => x.RoomId == roomId).ToListAsync()

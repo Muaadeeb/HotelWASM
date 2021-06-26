@@ -180,7 +180,7 @@ using Blazored.TextEditor;
         if (Id != null)
         {
             Title = "Update";
-            HotelRoomDto = await _hotelRoomRepository.GetHotelRoom(Id.Value);
+            HotelRoomDto = await _hotelRoomRepository.GetHotelRoomAsync(Id.Value);
 
             if (HotelRoomDto?.HotelRoomImages != null)
             {
@@ -226,7 +226,7 @@ using Blazored.TextEditor;
     {
         try
         {
-            var roomDetailsByName = await _hotelRoomRepository.IsRoomUnique(HotelRoomDto.Name, HotelRoomDto.Id);
+            var roomDetailsByName = await _hotelRoomRepository.IsRoomUniqueAsync(HotelRoomDto.Name, HotelRoomDto.Id);
 
             if (roomDetailsByName != null)
             {
@@ -237,7 +237,7 @@ using Blazored.TextEditor;
             HotelRoomDto.Details = await QuillHtml.GetHTML();
             if (HotelRoomDto.Id != 0 && Title == "Update")
             {
-                var updateResult = await _hotelRoomRepository.UpdateHotelRoom(HotelRoomDto, HotelRoomDto.Id);
+                var updateResult = await _hotelRoomRepository.UpdateHotelRoomAsync(HotelRoomDto, HotelRoomDto.Id);
 
                 if (HotelRoomDto.ImagesUrls != null && HotelRoomDto.ImagesUrls.Any() ||
                     DeletedImageNames != null && DeletedImageNames.Any())
@@ -248,7 +248,7 @@ using Blazored.TextEditor;
                         {
                             var imageName = deletedImageName.Replace($"{_navigationManager.BaseUri}RoomImages/", "");
                             var result = _fileUpload.DeleteFile(imageName);
-                            await _hotelImageRepository.DeleteHotelRoomImageByImageUrl(deletedImageName);
+                            await _hotelImageRepository.DeleteHotelRoomImageByImageUrlAsync(deletedImageName);
                         }
                     }
 
@@ -259,7 +259,7 @@ using Blazored.TextEditor;
             }
             else
             {
-                var createdResult = await _hotelRoomRepository.CreateHotelRoom(HotelRoomDto);
+                var createdResult = await _hotelRoomRepository.CreateHotelRoomAsync(HotelRoomDto);
                 await AddHotelRoomImage(createdResult);
                 await _jsRunTime.ToastrSuccess("Hotel room created successfully.");
             }
@@ -341,7 +341,7 @@ using Blazored.TextEditor;
                         RoomId = roomdetails.Id,
                         RoomImageUrl = imageUrl
                     };
-                    await _hotelImageRepository.CreateHotelRoomImage(RoomImage);
+                    await _hotelImageRepository.CreateHotelRoomImageAsync(RoomImage);
                 }
             }
         }

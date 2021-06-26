@@ -79,7 +79,7 @@
         {
             Title = "Update";
 
-            HotelAmenityModel = await AmenityRepository.GetHotelAmenity(Id.Value);
+            HotelAmenityModel = await AmenityRepository.GetHotelAmenityAsync(Id.Value);
         }
         else
         {
@@ -95,14 +95,14 @@
 
             if (HotelAmenityModel.Id != 0 && Title == "Update")
             {
-                var amenityDetailsByName = await AmenityRepository.IsSameNameAmenityAlreadyExists(HotelAmenityModel.Name);
+                var amenityDetailsByName = await AmenityRepository.IsSameNameAmenityAlreadyExistsAsync(HotelAmenityModel.Name);
                 if (amenityDetailsByName != null && amenityDetailsByName.Id != HotelAmenityModel.Id)
                 {
                     await jsRuntime.ToastrError("Hotel Amenity already exists.");
                     return;
                 }
                 
-                var updateAmenityResult = await AmenityRepository.UpdateHotelAmenity(HotelAmenityModel.Id, HotelAmenityModel);
+                var updateAmenityResult = await AmenityRepository.UpdateHotelAmenityAsync(HotelAmenityModel.Id, HotelAmenityModel);
 
 
                 await jsRuntime.ToastrSuccess("Hotel Amenity updated successfully.");
@@ -110,13 +110,13 @@
             else
             {
 
-                var amenityDetailsByName = await AmenityRepository.IsSameNameAmenityAlreadyExists(HotelAmenityModel.Name);
+                var amenityDetailsByName = await AmenityRepository.IsSameNameAmenityAlreadyExistsAsync(HotelAmenityModel.Name);
                 if (amenityDetailsByName != null)
                 {
                     await jsRuntime.ToastrError("Hotel Amenity name is already exists.");
                 }
                 
-                var createdResult = await AmenityRepository.CreateHotelAmenity(HotelAmenityModel);
+                var createdResult = await AmenityRepository.CreateHotelAmenityAsync(HotelAmenityModel);
                 HotelAmenityModel = new HotelAmenityDTO();
                 await jsRuntime.ToastrSuccess("Hotel amenity created successfully.");
 

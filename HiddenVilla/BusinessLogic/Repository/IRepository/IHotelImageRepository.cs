@@ -9,10 +9,10 @@ namespace Business.Repository.IRepository
 {
     public interface IHotelImageRepository
     {
-        public Task<int> CreateHotelRoomImage(HotelRoomImageDTO image);
-        public Task<int> DeleteHotelRoomImageByImageId(int imageId);
-        public Task<int> DeleteHotelRoomImageByRoomId(int roomId);
-        public Task<int> DeleteHotelRoomImageByImageUrl(string imageUrl);
-        public Task<IEnumerable<HotelRoomImageDTO>> GetHotelRoomImagesByRoomId(int roomId);
+        public Task<int> CreateHotelRoomImageAsync(HotelRoomImageDTO image);
+        public Task<int> DeleteHotelRoomImageByImageIdAsync(int imageId);
+        public Task<int> DeleteHotelRoomImageByRoomIdAsync(int roomId);
+        public Task<int> DeleteHotelRoomImageByImageUrlAsync(string imageUrl);
+        public Task<IEnumerable<HotelRoomImageDTO>> GetHotelRoomImagesByRoomIdAsync(int roomId);
     }
 }

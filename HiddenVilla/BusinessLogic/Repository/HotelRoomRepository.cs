@@ -23,7 +23,7 @@ namespace Business.Repository
             _mapper = mapper;
         }
 
-        public async Task<HotelRoomDTO> CreateHotelRoom(HotelRoomDTO hotelRoomDTO)
+        public async Task<HotelRoomDTO> CreateHotelRoomAsync(HotelRoomDTO hotelRoomDTO)
         {
             HotelRoom hotelRoom = _mapper.Map<HotelRoomDTO, HotelRoom>(hotelRoomDTO);
             hotelRoom.CreatedDate = DateTime.Now;
@@ -36,7 +36,7 @@ namespace Business.Repository
             return _mapper.Map<HotelRoom, HotelRoomDTO>(addedHotelRoom.Entity);
         }
 
-        public async Task<IEnumerable<HotelRoomDTO>> GetAllHotelRooms()
+        public async Task<IEnumerable<HotelRoomDTO>> GetAllHotelRoomsAsync(string checkInDate, string checkOutDate)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace Business.Repository
             }
         }
 
-        public async Task<HotelRoomDTO> GetHotelRoom(int roomId)
+        public async Task<HotelRoomDTO> GetHotelRoomAsync(int roomId, string checkInDate, string checkOutDate)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace Business.Repository
 
         }
 
-        public async Task<HotelRoomDTO> IsRoomUnique(string name, int roomId = 0)
+        public async Task<HotelRoomDTO> IsRoomUniqueAsync(string name, int roomId = 0)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace Business.Repository
             }
         }
 
-        public async Task<HotelRoomDTO> UpdateHotelRoom(HotelRoomDTO hotelRoomDTO, int roomId)
+        public async Task<HotelRoomDTO> UpdateHotelRoomAsync(HotelRoomDTO hotelRoomDTO, int roomId)
         {
             try
             {
@@ -121,7 +121,7 @@ namespace Business.Repository
             }
         }
 
-        public async Task<int> DeleteHotelRoom(int roomId)
+        public async Task<int> DeleteHotelRoomAsync(int roomId)
         {
             var roomDetails = await _dbContext.HotelRooms.FindAsync(roomId);
             if (roomDetails != null)
