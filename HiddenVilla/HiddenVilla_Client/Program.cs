@@ -25,8 +25,7 @@ namespace HiddenVilla_Client
             builder.Services.AddBlazoredLocalStorage(); // TJI I added this.
 
             builder.Services.AddScoped<IHotelRoomService, HotelRoomService>();
-
-
+            builder.Services.AddScoped<IHotelAmenityService, HotelAmenityService>();
 
             await builder.Build().RunAsync();
         }

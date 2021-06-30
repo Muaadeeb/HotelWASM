@@ -28,7 +28,6 @@ namespace API.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly APISettings _apiSettings;
 
-
         public AccountController(SignInManager<ApplicationUser> signinManager, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<APISettings> options)
         {
             _signinManager = signinManager;
