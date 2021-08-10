@@ -19,6 +19,10 @@ namespace Business.Mapper
             // ReverseMap does two way mapping.  c.f. lines 16 and 17 above.
             CreateMap<HotelRoomImage, HotelRoomImageDTO>().ReverseMap();
             CreateMap<HotelAmenity, HotelAmenityDTO>().ReverseMap();
+
+            CreateMap<RoomOrderDetail, RoomOrderDetailDTO>().ReverseMap();
+
+
         }
     }
 }

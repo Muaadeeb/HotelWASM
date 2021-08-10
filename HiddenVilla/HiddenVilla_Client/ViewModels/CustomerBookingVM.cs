@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HiddenVilla_Client.Models.ViewModels
+namespace HiddenVilla_Client.ViewModels
 {
-    public class Home
+    public class CustomerBookingVM
     {
         public DateTime StartDate { get; set; } = DateTime.Now;
         public DateTime EndDate  { get; set; }

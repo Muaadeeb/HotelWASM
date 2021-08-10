@@ -1,6 +1,6 @@
 ﻿@page "/"
 
-@using HiddenVilla_Client.Models.ViewModels;
+@using HiddenVilla_Client.ViewModels;
 @inject ILocalStorageService _localStorage;
 @inject IJSRuntime _jsRunTime;
 @inject NavigationManager _navigationManager;
@@ -38,20 +38,20 @@ else
             </a>
         </div>
     </div>
-    <EditForm Model="Home" OnValidSubmit="SaveInitialDataAsync">
+    <EditForm Model="CustomerBookingVM" OnValidSubmit="SaveInitialDataAsync">
         <div class="row p-0 mx-0 mt-4">
 
             <div class="col-12 col-md-5  offset-md-1 pl-2  pr-2 pr-md-0">
                 <div class="form-group">
                     <label>Check In Date</label>
-                    <InputDate min="@DateTime.Now.ToString("yyy-MM-dd")" @bind-Value="Home.StartDate" type="text" class="form-control" />
+                    <InputDate min="@DateTime.Now.ToString("yyy-MM-dd")" @bind-Value="CustomerBookingVM.StartDate" type="text" class="form-control" />
                 </div>
             </div>
 
             <div class="col-8 col-md-3 pl-2 pr-2">
                 <div class="form-group">
                     <label>No. of nights</label>
-                    <select class="form-control" @bind="Home.NumberOfNights">
+                    <select class="form-control" @bind="CustomerBookingVM.NumberOfNights">
                         @for (var i = 1; i <= 10; i++)
                         {
                             <option value="@i">@i</option>
@@ -100,7 +100,7 @@ else
 
     @code{
 
-public Home Home { get; set; } = new Home();
+    public CustomerBookingVM CustomerBookingVM { get; set; } = new CustomerBookingVM();
 
     public IEnumerable<HotelAmenityDTO> HotelAmenities { get; set; } = new List<HotelAmenityDTO>();
     public bool IsProcessing { get; set; } = false;
@@ -115,9 +115,9 @@ public Home Home { get; set; } = new Home();
     {
         try
         {
-            Home.EndDate = Home.StartDate.AddDays(Home.NumberOfNights);
+            CustomerBookingVM.EndDate = CustomerBookingVM.StartDate.AddDays(CustomerBookingVM.NumberOfNights);
 
-            await _localStorage.SetItemAsync(StaticDetails.Local_InitialBooking, Home);
+            await _localStorage.SetItemAsync(StaticDetails.Local_InitialBooking, CustomerBookingVM);
             _navigationManager.NavigateTo("hotel/rooms", true);
         }
         catch (Exception ex)

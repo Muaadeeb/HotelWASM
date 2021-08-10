@@ -45,7 +45,7 @@ namespace DataAccess.Data
         public string Phone { get; set; }
         
         [ForeignKey("RoomId")]
-        public string HotelRoom { get; set; }
+        public HotelRoom HotelRoom { get; set; }
 
         public string Status { get; set; }
     }

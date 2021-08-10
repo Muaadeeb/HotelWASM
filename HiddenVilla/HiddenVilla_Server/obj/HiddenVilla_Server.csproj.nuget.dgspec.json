@@ -32,6 +32,9 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
+              "C:\\Users\\Owner\\source\\repos\\Blazor_Complete_WASM_BhrugenPatel\\HotelWASM\\HiddenVilla\\Common\\Common.csproj": {
+                "projectPath": "C:\\Users\\Owner\\source\\repos\\Blazor_Complete_WASM_BhrugenPatel\\HotelWASM\\HiddenVilla\\Common\\Common.csproj"
+              },
               "C:\\Users\\Owner\\source\\repos\\Blazor_Complete_WASM_BhrugenPatel\\HotelWASM\\HiddenVilla\\DataAccess\\DataAccess.csproj": {
                 "projectPath": "C:\\Users\\Owner\\source\\repos\\Blazor_Complete_WASM_BhrugenPatel\\HotelWASM\\HiddenVilla\\DataAccess\\DataAccess.csproj"
               },
