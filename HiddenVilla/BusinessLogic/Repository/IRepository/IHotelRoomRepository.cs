@@ -15,5 +15,7 @@ namespace Business.Repository.IRepository
         public Task<HotelRoomDTO> GetHotelRoomAsync(int roomId, string checkInDate = null, string checkOutDate = null);
         public Task<int> DeleteHotelRoomAsync(int roomId);
         public Task<HotelRoomDTO> IsRoomUniqueAsync(string name, int roomId = 0);
+        //public Task<bool> ISRoomBookedAsync(int roomId, DateTime checkInDate, DateTime checkOutDate);
+        public Task<bool> ISRoomBookedAsync(int roomId, string checkInDate, string checkOutDate);
     }
 }

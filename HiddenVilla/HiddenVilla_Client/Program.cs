@@ -27,6 +27,7 @@ namespace HiddenVilla_Client
             builder.Services.AddScoped<IHotelRoomService, HotelRoomService>();
             builder.Services.AddScoped<IHotelAmenityService, HotelAmenityService>();
             builder.Services.AddScoped<IRoomOrderDetailService, RoomOrderDetailService>();
+            builder.Services.AddScoped<IStripePaymentService, StripePaymentService>();
 
             await builder.Build().RunAsync();
         }

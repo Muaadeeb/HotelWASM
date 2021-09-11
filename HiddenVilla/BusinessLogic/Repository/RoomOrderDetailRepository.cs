@@ -73,25 +73,30 @@ namespace Business.Repository
             }
         }
 
-        public async Task<bool> ISRoomBookedAsync(int roomId, DateTime checkInDate, DateTime checkOutDate)
-        {
-            var status = false;
-            var existingBooking = await _context.RoomOrderDetails.Where(x=> x.RoomId == roomId && x.IsPaymentSuccessful &&
-            (checkInDate < x.CheckOutDate && checkInDate.Date > x.CheckInDate 
-            || checkOutDate.Date > x.CheckInDate.Date && checkInDate.Date < x.CheckInDate.Date
-            )).FirstOrDefaultAsync();
 
-            if(existingBooking != null)
+
+        public async Task<RoomOrderDetailDTO> MarkPaymentSuccessfulAsync(int id)
+        {
+            var data = await _context.RoomOrderDetails.FindAsync(id);
+
+            if (data == null)
             {
-                status = true;
+                return null;
             }
 
-            return status;
-        }
+            if (!data.IsPaymentSuccessful)
+            {
+                data.IsPaymentSuccessful = true;
+                data.Status = Common.StaticDetails.Status_Booked;
+                var markPaymentSuccessful = _context.RoomOrderDetails.Update(data);
+                await _context.SaveChangesAsync();
+                return _mapper.Map<RoomOrderDetail, RoomOrderDetailDTO>(markPaymentSuccessful.Entity);
 
-        public Task<RoomOrderDetailDTO> MarkPaymentSuccessfulAsync(int id)
-        {
-            throw new NotImplementedException();
+            }
+
+            // TODO: why return empty object vs null...do we have an error here...do it better.
+            return new RoomOrderDetailDTO();
+
         }
 
         public Task<bool> UpdateOrderStatusAsync(int roomOrderId, string status)

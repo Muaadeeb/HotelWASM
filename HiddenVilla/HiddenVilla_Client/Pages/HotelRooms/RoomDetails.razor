@@ -3,6 +3,8 @@
 @inject IJSRuntime _jsRunTime
 @inject ILocalStorageService _localStorageService
 @inject IHotelRoomService _hotelRoomService
+@inject IStripePaymentService _stripePaymentService
+@inject IRoomOrderDetailService _roomOrderDetailService
 
 @using HiddenVilla_Client.ViewModels;
 
@@ -120,7 +122,17 @@ else
                     </select>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-success form-control">Checkout Now</button>
+
+                    @if (HotelBookingVM.OrderDetails.HotelRoomDTO.IsBooked)
+                    {
+                        <input class="btn btn-secondary form-control" value="Sold Out" />
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-success form-control">Checkout Now</button>
+                    }
+
+
                 </div>
             </EditForm>
         </div>
@@ -190,9 +202,33 @@ else
             return;
         }
 
+        try
+        {
+            var paymentDTO = new StripePaymentDTO()
+            {
+                Amount = Convert.ToInt32(HotelBookingVM.OrderDetails.HotelRoomDTO.TotalAmount * 100),
+                ProductName = HotelBookingVM.OrderDetails.HotelRoomDTO.Name,
+                ReturnUrl = "/hotel/room-details/" + Id
+            };
 
+            var result = await _stripePaymentService.CheckOut(paymentDTO);
 
+            HotelBookingVM.OrderDetails.StripeSessionId = result.Data.ToString();
+            HotelBookingVM.OrderDetails.RoomId = HotelBookingVM.OrderDetails.HotelRoomDTO.Id;
+            HotelBookingVM.OrderDetails.TotalCost = HotelBookingVM.OrderDetails.HotelRoomDTO.TotalAmount;
 
+            var roomOrderDetailSaved = await _roomOrderDetailService.SaveRoomOrderDetailAsync(HotelBookingVM.OrderDetails);
+
+            await _localStorageService.SetItemAsync(StaticDetails.Local_RoomOrderDetails, roomOrderDetailSaved);
+
+            //await _jsRunTime.InvokeVoidAsync("redirectToCheckout", result.Data.ToString());
+            await _jsRunTime.Stripe(result.Data.ToString());
+                                              
+        }
+        catch (Exception ex)
+        {
+            await _jsRunTime.ToastrError(ex.Message);
+        }
     }
 
 
@@ -218,7 +254,4 @@ else
 
         return true;
     }
-
-
-
 }

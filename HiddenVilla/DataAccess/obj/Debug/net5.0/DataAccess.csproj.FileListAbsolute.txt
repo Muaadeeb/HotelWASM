@@ -2,7 +2,6 @@ C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVi
 C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\DataAccess\bin\Debug\net5.0\DataAccess.dll
 C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\DataAccess\bin\Debug\net5.0\ref\DataAccess.dll
 C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\DataAccess\bin\Debug\net5.0\DataAccess.pdb
-C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\DataAccess\obj\Debug\net5.0\DataAccess.csprojAssemblyReference.cache
 C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\DataAccess\obj\Debug\net5.0\DataAccess.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\DataAccess\obj\Debug\net5.0\DataAccess.AssemblyInfoInputs.cache
 C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\DataAccess\obj\Debug\net5.0\DataAccess.AssemblyInfo.cs
@@ -10,3 +9,4 @@ C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVi
 C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\DataAccess\obj\Debug\net5.0\DataAccess.dll
 C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\DataAccess\obj\Debug\net5.0\ref\DataAccess.dll
 C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\DataAccess\obj\Debug\net5.0\DataAccess.pdb
+C:\Users\Owner\source\repos\Blazor_Complete_WASM_BhrugenPatel\HotelWASM\HiddenVilla\DataAccess\obj\Debug\net5.0\DataAccess.csprojAssemblyReference.cache

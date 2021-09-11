@@ -39,7 +39,7 @@ namespace API.Controllers
                         {
                             PriceData = new SessionLineItemPriceDataOptions
                             {
-                                UnitAmount=payment.Amount * 100,//convert to cents
+                                UnitAmount = payment.Amount,
                                 Currency="usd",
                                 ProductData= new SessionLineItemPriceDataProductDataOptions
                                 {

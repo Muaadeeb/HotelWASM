@@ -21,7 +21,6 @@ namespace HiddenVilla_Client.Services
 
         public async Task<SuccessModel> CheckOut(StripePaymentDTO stripePaymentDto)
         {
-            //var content = JsonConvert.SerializeObject(stripePaymentDto);
             JsonContent content = JsonContent.Create(stripePaymentDto);
             var response = await _client.PostAsync("api/stripepayment/create", content);
 
@@ -36,10 +35,6 @@ namespace HiddenVilla_Client.Services
                 var errorModel = JsonConvert.DeserializeObject<ErrorModel>(contentTemp);
                 throw new Exception(errorModel.ErrorMessage);
             }
-
-
-
-
         }
     }
 }

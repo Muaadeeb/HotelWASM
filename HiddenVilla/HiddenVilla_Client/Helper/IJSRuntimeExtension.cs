@@ -17,5 +17,10 @@ namespace HiddenVilla_Client.Helper
         {
             await jSRuntime.InvokeVoidAsync("ShowToastr", "error", message);
         }
+
+        public static async ValueTask Stripe(this IJSRuntime jSRuntime, string sessionId)
+        {
+            await jSRuntime.InvokeVoidAsync("redirectToCheckout", sessionId);
+        }
     }
 }
